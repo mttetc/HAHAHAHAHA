@@ -224,8 +224,6 @@ kbd {
   background: transparent;
   box-shadow: none;
   border-radius: 0;
-  width: 100vw;
-  height: 100vh;
 }
 
 .game-canvas {
@@ -309,7 +307,7 @@ kbd {
   max-width: 96vw;
   gap: 16px;
   overflow-y: auto;
-  max-height: 100vh;
+  max-height: 100dvh;
 }
 
 .results-header {
@@ -488,4 +486,29 @@ kbd {
   pointer-events: none;
   z-index: 10;
   padding: 0 16px;
+}
+
+/* ── Mobile responsive overrides ── */
+@media (max-width: 520px) {
+  .results-body {
+    grid-template-columns: 1fr;
+  }
+
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .results-title {
+    font-size: 1.3rem;
+  }
+
+  .score-block {
+    text-align: left;
+  }
+
+  .final-score {
+    font-size: 1.6rem;
+  }
 }

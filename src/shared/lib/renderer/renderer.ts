@@ -2,15 +2,15 @@ import type { GameState, Note } from "@/shared/model";
 import { DROP_DURATION_MS, HIT_ZONE_RATIO, GOOD_WINDOW_MS, MAX_HEALTH } from "@/shared/model";
 import type { PlayerState } from "@/shared/model";
 
-const W = window.innerWidth;
-const H = window.innerHeight;
-const NOTE_X = W / 2;
-const HIT_Y = H * HIT_ZONE_RATIO;
+let W = 0;
+let H = 0;
+let NOTE_X = 0;
+let HIT_Y = 0;
 const NOTE_R = 26;
 
 
 export function getCanvasSize() {
-  return { width: W, height: H };
+  return { width: window.innerWidth, height: window.innerHeight };
 }
 
 export function render(
@@ -19,6 +19,10 @@ export function render(
   opponent: PlayerState | null,
   elapsedMs: number
 ) {
+  W = ctx.canvas.width;
+  H = ctx.canvas.height;
+  NOTE_X = W / 2;
+  HIT_Y = H * HIT_ZONE_RATIO;
   drawBackground(ctx);
   if (!state.failed) drawMissFlash(ctx, state, elapsedMs);
   drawLane(ctx);
@@ -351,7 +355,7 @@ function drawScore(ctx: CanvasRenderingContext2D, state: GameState) {
 }
 
 function drawHealthBar(ctx: CanvasRenderingContext2D, health: number) {
-  const barW = 200;
+  const barW = Math.min(200, W * 0.44);
   const barH = 12;
   const panelPad = 8;
   const labelW = 28;
@@ -359,7 +363,7 @@ function drawHealthBar(ctx: CanvasRenderingContext2D, health: number) {
   const panelW = labelW + barW + valueW + panelPad * 2 + 8;
   const panelH = barH + panelPad * 2;
   const panelX = W / 2 - panelW / 2;
-  const panelY = 32;
+  const panelY = 52;
   const barX = panelX + panelPad + labelW + 4;
   const barY = panelY + panelPad;
   const pct = Math.max(0, health / MAX_HEALTH);

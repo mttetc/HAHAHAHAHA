@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { usePlayNote } from "@/features/play-note";
-import { render, getCanvasSize } from "@/shared/lib/renderer";
+import { render } from "@/shared/lib/renderer";
 import { createGameState, tickGame, type GameState, MAX_HEALTH } from "@/shared/model";
 import {
   loadAudio, scheduleAudio, stopAudio, getAudioElapsedMs, setDistortion,
@@ -27,6 +27,17 @@ export function Game({ name, roomId, startAt, onDone }: Props) {
   const doneRef = useRef(false);
 
   const { tap } = usePlayNote(stateRef, audioStartContextTimeRef);
+
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    function resize() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
 
   const gameLoop = useCallback(() => {
     const canvas = canvasRef.current;
@@ -95,14 +106,10 @@ export function Game({ name, roomId, startAt, onDone }: Props) {
     };
   }, [name, roomId, startAt, gameLoop]);
 
-  const { width, height } = getCanvasSize();
-
   return (
     <div className="game-screen">
       <canvas
         ref={canvasRef}
-        width={width}
-        height={height}
         className="game-canvas"
         onTouchStart={(e) => {
           e.preventDefault();
