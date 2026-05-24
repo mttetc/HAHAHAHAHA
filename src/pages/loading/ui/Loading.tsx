@@ -13,32 +13,72 @@ function FFCrystal() {
   return (
     <svg className="ff-crystal" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="g-tl" x1="8" y1="55" x2="50" y2="5" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#d8f4ff" />
-          <stop offset="1" stopColor="#5090ff" />
+        {/* Top-left face — main lit face */}
+        <linearGradient id="cf-1" x1="50" y1="4" x2="14" y2="70" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#f0fbff" />
+          <stop offset="0.5" stopColor="#88ccff" />
+          <stop offset="1" stopColor="#2255cc" />
         </linearGradient>
-        <linearGradient id="g-tr" x1="92" y1="55" x2="50" y2="5" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#90c0ff" />
-          <stop offset="1" stopColor="#1844cc" />
+        {/* Top-right face — partially lit */}
+        <linearGradient id="cf-2" x1="50" y1="4" x2="86" y2="70" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#c8e8ff" />
+          <stop offset="1" stopColor="#1340aa" />
         </linearGradient>
-        <linearGradient id="g-bl" x1="8" y1="55" x2="50" y2="125" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#1a3e9a" />
-          <stop offset="1" stopColor="#04083a" />
+        {/* Mid-left face — shadow */}
+        <linearGradient id="cf-3" x1="14" y1="70" x2="30" y2="108" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#2255aa" />
+          <stop offset="1" stopColor="#030d28" />
         </linearGradient>
-        <linearGradient id="g-br" x1="92" y1="55" x2="50" y2="125" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#2a55c8" />
-          <stop offset="1" stopColor="#060c4a" />
+        {/* Mid-right face — deep shadow */}
+        <linearGradient id="cf-4" x1="86" y1="70" x2="70" y2="108" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#0e2a7a" />
+          <stop offset="1" stopColor="#010716" />
         </linearGradient>
+        {/* Bottom faces */}
+        <linearGradient id="cf-5" x1="50" y1="108" x2="50" y2="126" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#061438" />
+          <stop offset="1" stopColor="#010310" />
+        </linearGradient>
+        {/* Inner core glow */}
+        <radialGradient id="cf-core" cx="44%" cy="44%" r="52%">
+          <stop offset="0"    stopColor="#ffffff" stopOpacity="0.92" />
+          <stop offset="0.3"  stopColor="#cceeff" stopOpacity="0.65" />
+          <stop offset="0.65" stopColor="#4488ff" stopOpacity="0.25" />
+          <stop offset="1"    stopColor="#001166" stopOpacity="0" />
+        </radialGradient>
       </defs>
-      {/* Four main facets */}
-      <polygon points="50,5 8,55 50,55" fill="url(#g-tl)" />
-      <polygon points="50,5 92,55 50,55" fill="url(#g-tr)" />
-      <polygon points="8,55 50,125 50,55" fill="url(#g-bl)" />
-      <polygon points="92,55 50,125 50,55" fill="url(#g-br)" />
-      {/* Highlight sparkle near the top */}
-      <polygon points="50,10 36,36 50,43 64,36" fill="white" opacity="0.28" />
-      {/* Outer edge for definition */}
-      <polygon points="50,5 8,55 50,125 92,55" fill="none" stroke="rgba(140,210,255,0.35)" strokeWidth="0.8" />
+
+      {/* ── 6 facets (octagonal body, two interior hubs) ── */}
+      <polygon points="50,4  22,36 14,70 50,60" fill="url(#cf-1)" />
+      <polygon points="50,4  78,36 86,70 50,60" fill="url(#cf-2)" />
+      <polygon points="14,70 30,108 50,98 50,60" fill="url(#cf-3)" />
+      <polygon points="86,70 70,108 50,98 50,60" fill="url(#cf-4)" />
+      <polygon points="30,108 50,126 50,98"      fill="url(#cf-5)" />
+      <polygon points="70,108 50,126 50,98"      fill="#010412" />
+
+      {/* ── Inner glow ── */}
+      <ellipse cx="46" cy="57" rx="25" ry="31" fill="url(#cf-core)" />
+
+      {/* ── Facet edge lines ── */}
+      <line x1="50" y1="4"  x2="50" y2="60"  stroke="rgba(210,240,255,0.55)" strokeWidth="0.6" />
+      <line x1="50" y1="60" x2="50" y2="98"  stroke="rgba(130,180,240,0.3)"  strokeWidth="0.5" />
+      <line x1="14" y1="70" x2="50" y2="60"  stroke="rgba(160,210,255,0.25)" strokeWidth="0.5" />
+      <line x1="86" y1="70" x2="50" y2="60"  stroke="rgba(100,160,220,0.2)"  strokeWidth="0.5" />
+
+      {/* ── Outer silhouette ── */}
+      <polygon
+        points="50,4 78,36 86,70 70,108 50,126 30,108 14,70 22,36"
+        fill="none"
+        stroke="rgba(180,225,255,0.5)"
+        strokeWidth="0.9"
+      />
+
+      {/* ── Top highlight cap (multi-face tip) ── */}
+      <polygon points="50,7  37,31 50,27 63,31" fill="white" opacity="0.42" />
+      <polygon points="50,10 43,24 50,21"       fill="white" opacity="0.28" />
+
+      {/* ── Left-face reflection streak ── */}
+      <polygon points="29,23 21,46 31,41 38,21" fill="white" opacity="0.11" />
     </svg>
   );
 }
