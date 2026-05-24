@@ -1,10 +1,11 @@
-let ctx: AudioContext | null = null;
+import { getSharedContext } from "./audio";
+
 let buffer: AudioBuffer | null = null;
 let source: AudioBufferSourceNode | null = null;
 let gain: GainNode | null = null;
 
 export async function startPrelude(): Promise<void> {
-  if (!ctx) ctx = new AudioContext();
+  const ctx = getSharedContext();
   if (ctx.state === "suspended") ctx.resume();
   if (!buffer) {
     const resp = await fetch("/prelude.mp3");

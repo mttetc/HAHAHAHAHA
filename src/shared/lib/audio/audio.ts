@@ -4,10 +4,15 @@ let source: AudioBufferSourceNode | null = null;
 let gainNode: GainNode | null = null;
 let filterNode: BiquadFilterNode | null = null;
 
-export function primeAudioContext(): void {
+export function getSharedContext(): AudioContext {
   if (!ctx) ctx = new AudioContext();
+  return ctx;
+}
+
+export function primeAudioContext(): void {
+  const context = getSharedContext();
   // iOS creates AudioContext in "suspended" even inside a user gesture — always try resume
-  if (ctx.state === "suspended") ctx.resume();
+  if (context.state === "suspended") context.resume();
 }
 
 export async function resumeContext(): Promise<void> {
