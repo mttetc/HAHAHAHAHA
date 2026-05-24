@@ -1,4 +1,4 @@
-import { primeAudioContext, startPrelude } from "@/shared/lib/audio";
+import { primeAudioContext } from "@/shared/lib/audio";
 
 type Props = {
   onReplay: () => void;
@@ -7,7 +7,6 @@ type Props = {
 export function ReplayButton({ onReplay }: Props) {
   function handleClick() {
     primeAudioContext();
-    startPrelude();
     onReplay();
   }
   return (
