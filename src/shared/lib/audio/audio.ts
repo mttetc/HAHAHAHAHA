@@ -23,10 +23,23 @@ export async function loadAudio(): Promise<void> {
   buffer = await ctx.decodeAudioData(arrayBuf);
 }
 
+function teardownNodes(): void {
+  if (gainNode) gainNode.gain.value = 0;
+  try { source?.stop(); } catch {}
+  try { source?.disconnect(); } catch {}
+  try { filterNode?.disconnect(); } catch {}
+  try { gainNode?.disconnect(); } catch {}
+  source = null;
+  filterNode = null;
+  gainNode = null;
+}
+
 export function scheduleAudio(): number {
   if (!ctx || !buffer) throw new Error("Audio not loaded");
-  // Context may still be suspended (iOS) — resume fire-and-forget; audio starts when it's running
+  // Clean up any lingering nodes — prevents overlap if called while audio is already playing
+  teardownNodes();
   if (ctx.state === "suspended") ctx.resume();
+
   gainNode = ctx.createGain();
   gainNode.gain.value = 1;
   gainNode.connect(ctx.destination);
@@ -55,17 +68,9 @@ export function setDistortion(health: number, maxHealth: number): void {
 }
 
 export function stopAudio(): void {
-  if (gainNode) gainNode.gain.value = 0;
-  try { source?.stop(); } catch { /* already stopped */ }
-  try { source?.disconnect(); } catch {}
-  try { filterNode?.disconnect(); } catch {}
-  try { gainNode?.disconnect(); } catch {}
-  source = null;
-  filterNode = null;
-  gainNode = null;
-  // Suspend (not close) — immediately halts all audio processing without destroying the context.
-  // close() would require a new AudioContext (and a new user gesture on iOS) on the next game.
-  ctx?.suspend().catch(() => {});
+  teardownNodes();
+  // gainNode.disconnect() is the synchronous kill — disconnecting from destination
+  // silences audio immediately at the graph level, no need to suspend the context.
 }
 
 export function getAudioElapsedMs(audioStartContextTime: number): number {

@@ -1,7 +1,12 @@
 import PartySocket from "partysocket";
 import type { ClientMsg, ServerMsg } from "@/shared/model";
 
-const HOST = import.meta.env.VITE_PARTYKIT_HOST ?? "localhost:1999";
+// In dev, PartyKit runs at localhost:1999 (separate from Vite's port).
+// In production (served from PartyKit), the WS host is the same as the page host.
+// VITE_PARTYKIT_HOST overrides both when deploying to a non-PartyKit host.
+const HOST =
+  import.meta.env.VITE_PARTYKIT_HOST ??
+  (window.location.hostname === "localhost" ? "localhost:1999" : window.location.host);
 
 export function createPartyClient(
   roomId: string,

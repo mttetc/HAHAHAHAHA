@@ -1,4 +1,5 @@
 {
   "name": "tidus-laugh",
-  "main": "server/index.ts"
+  "main": "server/index.ts",
+  "serve": "dist"
 }
