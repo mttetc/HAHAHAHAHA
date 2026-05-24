@@ -1,6 +1,6 @@
 import type { GameState, Note } from "@/shared/model";
 import { DROP_DURATION_MS, HIT_ZONE_RATIO, GOOD_WINDOW_MS, MAX_HEALTH } from "@/shared/model";
-import type { PlayerState } from "@/shared/types";
+import type { PlayerState } from "@/shared/model";
 
 const W = window.innerWidth;
 const H = window.innerHeight;

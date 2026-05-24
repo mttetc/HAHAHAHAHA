@@ -3,7 +3,7 @@ import { usePlayNote } from "@/features/play-note";
 import { render, getCanvasSize } from "@/shared/lib/renderer";
 import { createGameState, tickGame, type GameState, MAX_HEALTH } from "@/shared/model";
 import {
-  loadAudio, scheduleAudio, stopAudio, getAudioElapsedMs, resumeContext, setDistortion,
+  loadAudio, scheduleAudio, stopAudio, getAudioElapsedMs, setDistortion,
 } from "@/shared/lib/audio";
 import { createPartyClient } from "@/shared/api";
 import type { PlayerState, ServerMsg } from "@/shared/model";
@@ -77,7 +77,6 @@ export function Game({ name, roomId, startAt, onDone }: Props) {
     clientRef.current = client;
 
     async function init() {
-      await resumeContext();
       await loadAudio();
       const delayMs = Math.max(0, startAt - Date.now());
       timeoutRef.current = setTimeout(() => {

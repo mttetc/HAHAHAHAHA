@@ -5,11 +5,9 @@ let gainNode: GainNode | null = null;
 let filterNode: BiquadFilterNode | null = null;
 
 export function primeAudioContext(): void {
-  if (!ctx) {
-    ctx = new AudioContext();
-  } else if (ctx.state === "suspended") {
-    ctx.resume();
-  }
+  if (!ctx) ctx = new AudioContext();
+  // iOS creates AudioContext in "suspended" even inside a user gesture — always try resume
+  if (ctx.state === "suspended") ctx.resume();
 }
 
 export async function resumeContext(): Promise<void> {
@@ -18,9 +16,8 @@ export async function resumeContext(): Promise<void> {
 }
 
 export async function loadAudio(): Promise<void> {
-  if (!ctx) ctx = new AudioContext(); // create (or recreate after close) before the buffer check
-  await resumeContext();
-  if (buffer) return; // AudioBuffer is reusable across contexts — no need to re-decode
+  if (!ctx) ctx = new AudioContext();
+  if (buffer) return; // AudioBuffer is reusable — decodeAudioData works regardless of ctx state
   const resp = await fetch("/tidus-laugh.mp3");
   const arrayBuf = await resp.arrayBuffer();
   buffer = await ctx.decodeAudioData(arrayBuf);
@@ -28,6 +25,8 @@ export async function loadAudio(): Promise<void> {
 
 export function scheduleAudio(): number {
   if (!ctx || !buffer) throw new Error("Audio not loaded");
+  // Context may still be suspended (iOS) — resume fire-and-forget; audio starts when it's running
+  if (ctx.state === "suspended") ctx.resume();
   gainNode = ctx.createGain();
   gainNode.gain.value = 1;
   gainNode.connect(ctx.destination);
@@ -64,7 +63,9 @@ export function stopAudio(): void {
   source = null;
   filterNode = null;
   gainNode = null;
-  // Keep ctx alive — closing it requires a new user gesture to recreate on iOS.
+  // Suspend (not close) — immediately halts all audio processing without destroying the context.
+  // close() would require a new AudioContext (and a new user gesture on iOS) on the next game.
+  ctx?.suspend().catch(() => {});
 }
 
 export function getAudioElapsedMs(audioStartContextTime: number): number {

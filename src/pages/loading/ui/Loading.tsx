@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPartyClient } from "@/shared/api";
-import { loadAudio, resumeContext } from "@/shared/lib/audio";
+import { loadAudio } from "@/shared/lib/audio";
 import { GLOBAL_ROOM } from "@/shared/config";
 import type { ServerMsg } from "@/shared/model";
 
@@ -94,7 +94,6 @@ export function Loading({ name, onStart }: Props) {
   useEffect(() => {
     async function setup() {
       try {
-        await resumeContext();
         await loadAudio();
       } catch {
         // audio unavailable — game continues silently
