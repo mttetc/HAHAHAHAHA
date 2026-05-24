@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { Menu } from "@/pages/menu";
 import { Loading } from "@/pages/loading";
@@ -31,19 +31,6 @@ export function App() {
     startAt: 0,
     result: null,
   });
-  const preludeRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    const a = preludeRef.current!;
-    const start = () => a.play().catch(() => {});
-    // Input is autoFocused so keydown fires on the first keystroke of the name
-    document.addEventListener("keydown", start, { once: true });
-    document.addEventListener("pointerdown", start, { once: true });
-    return () => {
-      document.removeEventListener("keydown", start);
-      document.removeEventListener("pointerdown", start);
-    };
-  }, []);
 
   const goToLoading = useCallback((name: string) => {
     setState((s) => ({ ...s, screen: "loading", name }));
@@ -67,8 +54,7 @@ export function App() {
   return (
     <>
       <BgVideo />
-      <audio ref={preludeRef} src="/prelude.mp3" loop style={{ display: "none" }} />
-      {state.screen === "menu" && <Menu onPlay={goToLoading} />}
+{state.screen === "menu" && <Menu onPlay={goToLoading} />}
       {state.screen === "loading" && <Loading name={state.name} onStart={goToGame} />}
       {state.screen === "game" && (
         <Game
