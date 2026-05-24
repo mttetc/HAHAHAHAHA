@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { primeAudioContext, startPrelude } from "@/shared/lib/audio";
+import { primeAudioContext } from "@/shared/lib/audio";
 
 const RANDOM_NAMES = [
   "Tidus", "Yuna", "Auron", "Rikku", "Wakka",
@@ -25,7 +25,6 @@ export function EnterGameForm({ onPlay }: Props) {
     const trimmed = name.trim() || randomName();
     localStorage.setItem("playerName", trimmed);
     primeAudioContext();
-    startPrelude();
     onPlay(trimmed);
   }
 
