@@ -36,12 +36,9 @@ export function App() {
   useEffect(() => {
     const a = preludeRef.current!;
     const start = () => a.play().catch(() => {});
-    a.play().catch(() => {
-      // Browser blocks autoplay — play on first interaction
-      // Input is autoFocused so keydown fires on first keystroke of the name
-      document.addEventListener("keydown", start, { once: true });
-      document.addEventListener("pointerdown", start, { once: true });
-    });
+    // Input is autoFocused so keydown fires on the first keystroke of the name
+    document.addEventListener("keydown", start, { once: true });
+    document.addEventListener("pointerdown", start, { once: true });
     return () => {
       document.removeEventListener("keydown", start);
       document.removeEventListener("pointerdown", start);
