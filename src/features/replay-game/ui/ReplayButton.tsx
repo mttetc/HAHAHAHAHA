@@ -1,4 +1,4 @@
-import { primeAudioContext } from "@/shared/lib/audio";
+import { primeAudioContext, startPrelude } from "@/shared/lib/audio";
 
 type Props = {
   onReplay: () => void;
@@ -6,7 +6,8 @@ type Props = {
 
 export function ReplayButton({ onReplay }: Props) {
   function handleClick() {
-    primeAudioContext(); // resume AudioContext inside user gesture so iOS allows it
+    primeAudioContext();
+    startPrelude();
     onReplay();
   }
   return (
