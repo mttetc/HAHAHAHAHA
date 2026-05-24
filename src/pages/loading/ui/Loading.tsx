@@ -93,8 +93,12 @@ export function Loading({ name, onStart }: Props) {
 
   useEffect(() => {
     async function setup() {
-      await resumeContext();
-      await loadAudio();
+      try {
+        await resumeContext();
+        await loadAudio();
+      } catch {
+        // audio unavailable — game continues silently
+      }
       setAssetsReady(true);
     }
     setup();

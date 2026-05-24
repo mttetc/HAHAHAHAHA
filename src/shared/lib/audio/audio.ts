@@ -64,12 +64,7 @@ export function stopAudio(): void {
   source = null;
   filterNode = null;
   gainNode = null;
-  // Close the context entirely — suspend() only pauses, so the source would
-  // resume on the next game. close() kills all nodes permanently.
-  if (ctx) {
-    ctx.close().catch(() => {});
-    ctx = null;
-  }
+  // Keep ctx alive — closing it requires a new user gesture to recreate on iOS.
 }
 
 export function getAudioElapsedMs(audioStartContextTime: number): number {
