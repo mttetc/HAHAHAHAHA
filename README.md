@@ -31,7 +31,7 @@ Hit perfects → multiplier stacks → flames appear → you ascend.
 
 ## Multiplayer
 
-Rooms auto-start when someone joins. Late joiners sync to the current game. Top 10 scores persist on the leaderboard between sessions (PartyKit Durable Objects).
+Rooms auto-start when someone joins. Late joiners sync to the current game. Top 10 scores persist on the leaderboard between sessions (Cloudflare Durable Objects via PartyServer).
 
 ---
 
@@ -42,7 +42,7 @@ Rooms auto-start when someone joins. Late joiners sync to the current game. Top 
 | UI | React 19 + TypeScript |
 | Rendering | HTML5 Canvas |
 | Audio | Web Audio API |
-| Realtime | PartyKit (Cloudflare Workers) |
+| Realtime | PartyServer (Cloudflare Workers) |
 | Persistence | Cloudflare Durable Objects |
 | Build | Vite 5 |
 | Architecture | Feature-Sliced Design |
@@ -55,14 +55,26 @@ Rooms auto-start when someone joins. Late joiners sync to the current game. Top 
 
 ```bash
 pnpm install
-pnpm dev        # starts Vite + PartyKit local server
+pnpm dev        # starts Vite + wrangler dev (worker on :1999)
 pnpm lint       # oxlint
 pnpm lint:arch  # steiger FSD check
+pnpm typecheck  # app + vite config + worker
 pnpm build      # production build
-pnpm deploy     # build + partykit deploy
+pnpm deploy     # build + wrangler deploy (needs `npx wrangler login` once)
 ```
 
 ---
+
+## Deploy
+
+The Worker serves the Vite build (`dist/`) as static assets and handles `/parties/main/:room` for realtime. One `wrangler deploy` ships both.
+
+```bash
+npx wrangler login   # once
+pnpm deploy
+```
+
+Migrated from the hosted PartyKit platform (shut down 23 Oct 2026) to PartyServer on a personal Cloudflare account.
 
 ## Why
 

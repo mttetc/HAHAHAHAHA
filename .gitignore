@@ -27,5 +27,6 @@ pnpm-debug.log*
 # TypeScript
 *.tsbuildinfo
 
-# PartyKit
-.partykit/
+# Wrangler
+.wrangler/
+.dev.vars
