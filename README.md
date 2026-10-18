@@ -16,11 +16,23 @@ Hit **SPACE** (or tap) in sync with the HAs. Don't die. Beat your friends.
 
 ---
 
+## Screenshots
+
+| Menu | Countdown |
+|---|---|
+| ![Menu](docs/menu.jpg) | ![Countdown](docs/countdown.jpg) |
+
+| In game | Results & Hall of Laughs |
+|---|---|
+| ![Gameplay](docs/game.jpg) | ![Results](docs/results.jpg) |
+
+---
+
 ## How to play
 
 1. Enter your name (or get blessed with a random FF character)
 2. Wait for the countdown
-3. **SPACE** or **tap** on every HA
+3. **SPACE** (desktop) or **tap** (mobile) on every HA — the countdown screen tells you which
 4. Survive all 5 loops
 5. Check the Hall of Laughs
 

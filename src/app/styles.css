@@ -276,6 +276,23 @@ kbd {
   animation: pulse 1.5s infinite;
 }
 
+.controls-hint {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.controls-hint kbd {
+  font: inherit;
+  font-weight: bold;
+  color: var(--gold);
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+}
+
 /* Countdown number */
 .countdown-num {
   font-size: 5rem;

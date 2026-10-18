@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPartyClient } from "@/shared/api";
 import { loadAudio } from "@/shared/lib/audio";
 import { GLOBAL_ROOM } from "@/shared/config";
+import { isTouchDevice } from "@/shared/lib/input";
 import type { ServerMsg } from "@/shared/model";
 
 type Props = {
@@ -143,6 +144,13 @@ export function Loading({ name, onStart }: Props) {
       {startAt && msLeft === 0 && (
         <div className="countdown-go">LAUGH!</div>
       )}
+      <p className="controls-hint">
+        {isTouchDevice() ? (
+          <>Tap the screen to time the HAs!</>
+        ) : (
+          <>Use your <kbd>SPACEBAR</kbd> to time the HAs!</>
+        )}
+      </p>
     </div>
   );
 }
